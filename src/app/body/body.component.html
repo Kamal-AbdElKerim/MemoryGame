@@ -1,0 +1,8 @@
+<div class="border-2 border-sky-500 p-5 grid grid-cols-4 gap-4 boxPlay" >
+  @for (color of colors; track color) {
+
+  <app-box-color [color]="color" [ngStyle]="{ 'width.px': getDynamicSize(), 'height.px': getDynamicSize() }"></app-box-color>
+  }
+</div>
+
+
