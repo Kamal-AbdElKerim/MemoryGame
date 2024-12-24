@@ -1,2 +1,5 @@
-<div class="Color" [style.background-color]="color">
+<div [@colorAnimation]="currentState"
+     [ngStyle]="{'background-color': color, 'width.px': width, 'height.px': height }"
+     [class]="Border"
+     class="color-box">
 </div>
