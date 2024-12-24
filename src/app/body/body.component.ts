@@ -15,7 +15,7 @@ export class BodyComponent {
   randomizedSequence: string[] = [];
   containerWidth: number = 800;
   message: string = '';
-  countdown: number = 4;
+  countdown: number = 0;
   StartAnswers: boolean = false;
   score: number = 0;
   Border: string = "rounded-full";
@@ -23,6 +23,8 @@ export class BodyComponent {
   Round: number = 2;
   startTime!: number;
   endTime!: number;
+  IsPlay: boolean = false;
+  RandomColor: string[] = []
 
   @ViewChildren(BoxColorComponent) boxComponents!: QueryList<BoxColorComponent>;
 
@@ -32,13 +34,26 @@ export class BodyComponent {
 
   startGame(): void {
     this.StartAnswers = false;
+    this.IsPlay = true
     this.EndGame = false;
-    this.countdown = 4;
+    this.countdown = 15;
     this.gameService.generateSequence(this.Round);
     this.gameSequence = this.gameService.gameSequence;
+    this.RandomColor = this.shuffleArray(this.gameSequence);
     this.randomizeSequence();
     this.displaySequence();
+    console.log('Generated sequence:', this.RandomColor);
   }
+
+  shuffleArray(array: string[]): string[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
 
   randomizeSequence(): void {
     this.randomizedSequence = this.gameSequence
@@ -47,12 +62,15 @@ export class BodyComponent {
   }
 
   displaySequence(): void {
+
+
     let delay = 0;
-    this.randomizedSequence.forEach((color) => {
+    this.RandomColor.forEach((color) => {
       setTimeout(() => {
         const box = this.boxComponents.find((b) => b.color === color);
         if (box) {
-          box.highlight();
+          let highlightDuration = this.getHighlightDuration();
+          box.highlight(highlightDuration);
         }
       }, delay);
       delay += 1000;
@@ -70,6 +88,17 @@ export class BodyComponent {
     }, 1000);
   }
 
+  getHighlightDuration(): number {
+    let baseDuration = 500 - (this.gameSequence.length * 20);
+    console.log("baseDuration" , baseDuration)
+    let countdownFactor = 1 + (20 - this.countdown) * 0.1;
+    console.log("countdownFactor" , countdownFactor)
+    let finalDuration = Math.max(100, baseDuration / countdownFactor);
+    console.log("finalDuration" , finalDuration)
+
+    return finalDuration;
+  }
+
   handlePlayerClick(color: string): void {
     this.gameService.playerSequence.push(color);
     console.log(this.gameService.playerSequence);
@@ -83,7 +112,7 @@ export class BodyComponent {
 
   IsGood(): void {
     this.endTime = Date.now();
-    if (this.gameService.CheckingAnswers()) {
+    if (this.gameService.CheckingAnswers(this.RandomColor)) {
       const elapsedTime = (this.endTime - this.startTime) / 1000;
       console.log("elapsedTime" , elapsedTime);
       const timeBonus = Math.max(0, 15 - elapsedTime) * 10;
@@ -104,7 +133,7 @@ export class BodyComponent {
     const maxSize = 200;
     const minSize = 50;
     const sizeFactor = 9;
-    return Math.max(minSize, maxSize - ((this.gameService.colors.length - sizeFactor) * 10));
+    return Math.max(minSize, maxSize - ((this.gameService.gameSequence.length - sizeFactor) * 10));
   }
 
   getColumnCount(): number {

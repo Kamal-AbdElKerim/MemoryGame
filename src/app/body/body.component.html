@@ -1,14 +1,17 @@
 <div class="text-center my-3">
+  @if (!IsPlay)
+  {
+
   <button (click)="startGame()" class="btn btn-success">Start</button>
+  }
   <button (click)="ResetPlayerSequence()" class="btn btn-info ms-3">Replay</button>
-  <button (click)="IsGood()" class="btn btn-info ms-3">Go</button>
-  <button (click)="EndGame = true; message = 'Game Over!';" class="btn btn-danger ms-3">End the Game</button>
+  <button [disabled]="!StartAnswers" (click)="IsGood()" class="btn btn-info ms-3">Go</button>
 </div>
 
 <div class="text-center my-4">
-  <h3>Countdown: {{ countdown }}</h3> <!-- Displaying countdown -->
-  <h3>{{ message }}</h3> <!-- Displaying message -->
-  <h3>Score: {{ score }}</h3> <!-- Displaying score -->
+  <h3>Countdown: {{ countdown }}</h3>
+  <h3>{{ message }}</h3>
+  <h3>Score: {{ score }}</h3>
 </div>
 
 <div class="border-2 border-sky-500 p-5 grid gap-4 boxPlay" [ngStyle]="{
@@ -17,12 +20,15 @@
   <!-- Display randomized sequence for the player to click if StartAnswers is true -->
   <ng-container *ngIf="StartAnswers; else memorizeSequence">
     <app-box-color
+
       *ngFor="let color of randomizedSequence"
       (click)="handlePlayerClick(color)"
       [color]="color"
       [Border]="Border"
       [width]="getDynamicSize() - (getDynamicSize() * 0.35)"
-      [height]="getDynamicSize() - (getDynamicSize() * 0.35)">
+      [height]="getDynamicSize() - (getDynamicSize() * 0.35)"
+      [isRandomized]="true"
+    >
     </app-box-color>
   </ng-container>
 
@@ -32,8 +38,8 @@
       *ngFor="let color of gameSequence"
       [color]="color"
       [Border]="Border"
-      [width]="getDynamicSize()"
-      [height]="getDynamicSize()">
+      [width]="getDynamicSize() - (getDynamicSize() * 0.35)"
+      [height]="getDynamicSize() - (getDynamicSize() * 0.35)">
     </app-box-color>
   </ng-template>
 </div>
