@@ -88,6 +88,7 @@ export class BodyComponent {
     }, 1000);
   }
 
+
   getHighlightDuration(): number {
     let baseDuration = 500 - (this.gameSequence.length * 20);
     console.log("baseDuration" , baseDuration)
