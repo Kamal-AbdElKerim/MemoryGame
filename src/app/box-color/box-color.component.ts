@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { NgStyle } from "@angular/common";
 
@@ -20,14 +20,26 @@ import { NgStyle } from "@angular/common";
     ]),
   ]
 })
-export class BoxColorComponent {
+export class BoxColorComponent implements OnChanges{
   @Input() color: string = '';
   @Input() width: number = 200;
   @Input() height: number = 150;
   @Input() Border: string = '';
   @Input() isRandomized: boolean = false;
+  @Input() playerSequence: string[] = [];
 
   currentState = 'inactive'; // Default state
+
+  ngOnChanges(): void {
+    console.log("ttplayerSequence" ,this.playerSequence)
+    if (this.playerSequence.includes(this.color)) {
+      console.log("this.color" , this.color);
+      this.currentState = 'active';
+    } else {
+      console.log("!this.color" , this.color);
+      this.currentState = 'inactive';
+    }
+  }
 
   highlight(timer: number): void {
     this.currentState = 'active';

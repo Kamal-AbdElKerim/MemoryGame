@@ -1,23 +1,24 @@
-<div class="text-center my-3">
-  @if (!IsPlay)
-  {
+<app-commands
+  [IsPlay]="IsPlay"
+  [EndGame]="EndGame"
+  [countdown]="countdown"
+  (startGame)="startGame()"
+  (resetGame)="RestGame()"
+  (resetPlayerSequence)="ResetPlayerSequence()"
+  (checkSequence)="IsGood()"
+></app-commands>
 
-  <button (click)="startGame()" class="btn btn-success">Start</button>
-  }
-  <button (click)="ResetPlayerSequence()" class="btn btn-info ms-3">Replay</button>
-  <button [disabled]="!StartAnswers" (click)="IsGood()" class="btn btn-info ms-3">Go</button>
-</div>
+<app-score
+  [countdown]="countdown"
+  [message]="message"
+  [score]="score"
+></app-score>
 
-<div class="text-center my-4">
-  <h3>Countdown: {{ countdown }}</h3>
-  <h3>{{ message }}</h3>
-  <h3>Score: {{ score }}</h3>
-</div>
 
 <div class="border-2 border-sky-500 p-5 grid gap-4 boxPlay" [ngStyle]="{
   'grid-template-columns': 'repeat(' + getColumnCount() + ', 1fr)'
 }">
-  <!-- Display randomized sequence for the player to click if StartAnswers is true -->
+
   <ng-container *ngIf="StartAnswers; else memorizeSequence">
     <app-box-color
 
@@ -28,11 +29,12 @@
       [width]="getDynamicSize() - (getDynamicSize() * 0.35)"
       [height]="getDynamicSize() - (getDynamicSize() * 0.35)"
       [isRandomized]="true"
+      [playerSequence]="gameService.playerSequence"
+
     >
     </app-box-color>
   </ng-container>
 
-  <!-- Display the game sequence for memorization if StartAnswers is false -->
   <ng-template #memorizeSequence>
     <app-box-color
       *ngFor="let color of gameSequence"

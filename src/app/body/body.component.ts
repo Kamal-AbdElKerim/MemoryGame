@@ -2,11 +2,13 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { BoxColorComponent } from "../box-color/box-color.component";
 import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import { GameService } from "../game.service";
+import {CommandsComponent} from "../commands/commands.component";
+import {ScoreComponent} from "../score/score.component";
 
 @Component({
   selector: 'app-body',
   standalone: true,
-  imports: [BoxColorComponent, NgStyle, NgForOf, NgClass, NgIf],
+  imports: [BoxColorComponent, NgStyle, NgForOf, NgClass, NgIf, CommandsComponent, ScoreComponent],
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.css']
 })
@@ -28,15 +30,23 @@ export class BodyComponent {
 
   @ViewChildren(BoxColorComponent) boxComponents!: QueryList<BoxColorComponent>;
 
-  constructor(private gameService: GameService) {
+  constructor(public gameService: GameService) {
 
+  }
+
+  RestGame(): void {
+    this.message = '';
+    this.Round = 2
+    this.gameService.gameSequence = []
+    this.score = 0
+    this.startGame()
   }
 
   startGame(): void {
     this.StartAnswers = false;
     this.IsPlay = true
     this.EndGame = false;
-    this.countdown = 15;
+    this.countdown = 5;
     this.gameService.generateSequence(this.Round);
     this.gameSequence = this.gameService.gameSequence;
     this.RandomColor = this.shuffleArray(this.gameSequence);
@@ -62,7 +72,6 @@ export class BodyComponent {
   }
 
   displaySequence(): void {
-
 
     let delay = 0;
     this.RandomColor.forEach((color) => {
@@ -111,17 +120,15 @@ export class BodyComponent {
     this.gameService.playerSequence = [];
   }
 
+
+
   IsGood(): void {
-    this.endTime = Date.now();
+
     if (this.gameService.CheckingAnswers(this.RandomColor)) {
-      const elapsedTime = (this.endTime - this.startTime) / 1000;
-      console.log("elapsedTime" , elapsedTime);
-      const timeBonus = Math.max(0, 15 - elapsedTime) * 10;
-      console.log("timeBonus" , timeBonus);
-      this.score += 50 + Math.floor(timeBonus);
-      console.log("score" , this.score);
+      this.score = this.gameService.CalcScore(this.endTime ,this.startTime  ,this.score )
       this.Round++;
       this.startGame();
+      this.message = '';
     } else {
       this.EndGame = true;
       this.message = `Game Over! Your final score is ${this.score}.`;
