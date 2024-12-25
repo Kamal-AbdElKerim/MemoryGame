@@ -1,19 +1,41 @@
-import {Component, EventEmitter , Output} from '@angular/core';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { GameService } from '../game.service';
+import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-commands',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './commands.component.html',
   styleUrl: './commands.component.css'
 })
 export class CommandsComponent {
-  started = false;
 
-  @Output() incrementCountEvent = new EventEmitter<boolean>();
+  @Input() IsPlay!: boolean;
+  @Input() EndGame!: boolean;
+  @Input() countdown!: number;
 
-  StartGame() : void {
-    this.started = true;
-    this.incrementCountEvent.emit(this.started);
+  @Output() startGame = new EventEmitter<void>();
+  @Output() resetGame = new EventEmitter<void>();
+  @Output() resetPlayerSequence = new EventEmitter<void>();
+  @Output() checkSequence = new EventEmitter<void>();
+
+  constructor(public gameService: GameService) {}
+
+  onStartGame() {
+    this.startGame.emit();
+  }
+
+  onRestGame() {
+    this.resetGame.emit();
+  }
+
+  onResetPlayerSequence() {
+    this.resetPlayerSequence.emit();
+  }
+
+  onIsGood() {
+    this.checkSequence.emit();
   }
 }

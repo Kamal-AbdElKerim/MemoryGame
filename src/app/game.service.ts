@@ -13,19 +13,22 @@ export class GameService {
   gameSequence: string[] = [];
   playerSequence: string[] = [];
 
+
   constructor() { }
 
-  generateSequence(length: number): void {
-    // Shuffle the colors array
+  generateSequence(round: number): void {
+    const minColors = 2;
+    const sequenceLength = Math.max(round, minColors);
+    console.log("sequenceLength........" , sequenceLength)
+
     const shuffledColors = [...this.colors].sort(() => Math.random() - 0.5);
 
-    // Ensure the length of the sequence does not exceed the number of available colors
-    const sequenceLength = Math.min(length, this.colors.length);
-
-    // Slice the shuffled array to the desired length (this ensures no duplicates)
-    this.gameSequence = shuffledColors.slice(0, sequenceLength);
-
-
+    while (this.gameSequence.length < sequenceLength) {
+      const newColor = shuffledColors.find(color => !this.gameSequence.includes(color));
+      if (newColor) {
+        this.gameSequence.push(newColor);
+      }
+    }
   }
 
 
@@ -44,5 +47,15 @@ export class GameService {
       console.log("false")
       return false;
     }
+  }
+
+  CalcScore(endTime : number ,startTime : number ,score : number ): number {
+    endTime = Date.now();
+    const elapsedTime = (endTime - startTime) / 1000;
+    console.log("elapsedTime" , elapsedTime);
+    const timeBonus = Math.max(0, 15 - elapsedTime) * 10;
+    console.log("timeBonus" , timeBonus);
+    score += 50 + Math.floor(timeBonus);
+    return score ;
   }
 }
