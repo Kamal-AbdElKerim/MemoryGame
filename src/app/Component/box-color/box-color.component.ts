@@ -1,11 +1,12 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { NgStyle } from "@angular/common";
+import {GameService} from "../../service/game.service";
+import {timer} from "rxjs";
 
 @Component({
   selector: 'app-box-color',
-  standalone: true,
-  imports: [NgStyle],
+
   templateUrl: './box-color.component.html',
   styleUrls: ['./box-color.component.css'],
   animations: [
@@ -20,26 +21,16 @@ import { NgStyle } from "@angular/common";
     ]),
   ]
 })
-export class BoxColorComponent implements OnChanges{
+export class BoxColorComponent {
   @Input() color: string = '';
   @Input() width: number = 200;
   @Input() height: number = 150;
   @Input() Border: string = '';
   @Input() isRandomized: boolean = false;
-  @Input() playerSequence: string[] = [];
 
-  currentState = 'inactive'; // Default state
 
-  ngOnChanges(): void {
-    console.log("ttplayerSequence" ,this.playerSequence)
-    if (this.playerSequence.includes(this.color)) {
-      console.log("this.color" , this.color);
-      this.currentState = 'active';
-    } else {
-      console.log("!this.color" , this.color);
-      this.currentState = 'inactive';
-    }
-  }
+  currentState = 'inactive';
+
 
   highlight(timer: number): void {
     this.currentState = 'active';
@@ -58,5 +49,8 @@ export class BoxColorComponent implements OnChanges{
     if (this.isRandomized) {
       this.currentState = 'inactive';
     }
+
   }
+
+
 }
