@@ -54,20 +54,18 @@ export class BodyComponent {
     console.log('Generated sequence:', this.RandomColor);
   }
 
- // shuffleArray(array: string[]): string[] {
- //   const shuffled = [...array];
- //   for (let i = shuffled.length - 1; i > 0; i--) {
- //     const j = Math.floor(Math.random() * (i + 1));
- //     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
- //   }
- //   return shuffled;
- // }
+  shuffleArray(array: string[]): string[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
 
 
   randomizeSequence(): void {
-    this.randomizedSequence = this.gameSequence
-      .slice()
-      .sort(() => Math.random() - 0.5);
+    this.randomizedSequence = this.shuffleArray(this.gameSequence)
   }
 
   displaySequence(): void {
@@ -115,7 +113,6 @@ export class BodyComponent {
 
   ResetPlayerSequence(): void {
     this.gameService.playerSequence = [];
-
   }
 
 
