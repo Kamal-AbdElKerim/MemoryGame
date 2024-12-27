@@ -14,6 +14,7 @@ export class ScoreComponent  {
   @Input() countdown!: number;
   @Input() message!: string;
   @Input() score!: number;
+  @Input() level!: number;
 
 
   constructor( public gameService: GameService) {

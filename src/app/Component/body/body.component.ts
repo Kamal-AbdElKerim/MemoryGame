@@ -25,6 +25,8 @@ export class BodyComponent {
   endTime!: number;
   IsPlay: boolean = false;
   RandomColor: string[] = []
+  level: number = 1;
+
 
   @ViewChildren(BoxColorComponent) boxComponents!: QueryList<BoxColorComponent>;
 
@@ -37,6 +39,7 @@ export class BodyComponent {
     this.Round = 2
     this.gameService.gameSequence = []
     this.score = 0
+    this.level = 1
     this.startGame()
   }
 
@@ -52,6 +55,10 @@ export class BodyComponent {
     this.randomizeSequence();
     this.displaySequence();
     console.log('Generated sequence:', this.RandomColor);
+  }
+
+  incrementerNiveau(): void {
+    this.level++;
   }
 
   shuffleArray(array: string[]): string[] {
@@ -123,6 +130,7 @@ export class BodyComponent {
       this.Round++;
       this.startGame();
       this.message = '';
+      this.incrementerNiveau()
     } else {
       this.EndGame = true;
       this.message = `Game Over! Your final score is ${this.score}.`;
