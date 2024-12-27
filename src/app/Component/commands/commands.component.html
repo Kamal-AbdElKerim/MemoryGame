@@ -1,7 +1,12 @@
 <div class="text-center my-3">
-  <button *ngIf="!IsPlay" (click)="onStartGame()" class="btn btn-success">Start</button>
-  <button *ngIf="EndGame" (click)="onRestGame()" class="btn btn-info ms-3">Reset Game</button>
-  <ng-container *ngIf="countdown === 0 && IsPlay && !EndGame">
+  @if (!IsPlay) {
+<button (click)="onStartGame()" class="btn btn-success">Start</button>
+}
+  @if (EndGame) {
+<button (click)="onRestGame()" class="btn btn-info ms-3">Reset Game</button>
+}
+  @if (countdown === 0 && IsPlay && !EndGame) {
+
     <button
       [disabled]="gameService.playerSequence.length === 0"
       (click)="onResetPlayerSequence()"
@@ -16,6 +21,7 @@
     >
       Go
     </button>
-  </ng-container>
+  
+}
 </div>
 

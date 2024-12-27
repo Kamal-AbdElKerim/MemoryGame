@@ -1,14 +1,12 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { BoxColorComponent } from "../box-color/box-color.component";
-import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
-import { GameService } from "../game.service";
-import {CommandsComponent} from "../commands/commands.component";
-import {ScoreComponent} from "../score/score.component";
+import { GameService } from "../../service/game.service";
+
 
 @Component({
   selector: 'app-body',
-  standalone: true,
-  imports: [BoxColorComponent, NgStyle, NgForOf, NgClass, NgIf, CommandsComponent, ScoreComponent],
+ // standalone: true,
+ // imports: [BoxColorComponent, NgStyle, NgClass, CommandsComponent, ScoreComponent],
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.css']
 })
@@ -46,7 +44,7 @@ export class BodyComponent {
     this.StartAnswers = false;
     this.IsPlay = true
     this.EndGame = false;
-    this.countdown = 5;
+    this.countdown = 15;
     this.gameService.generateSequence(this.Round);
     this.gameSequence = this.gameService.gameSequence;
     this.RandomColor = this.shuffleArray(this.gameSequence);
@@ -112,12 +110,11 @@ export class BodyComponent {
   handlePlayerClick(color: string): void {
     this.gameService.playerSequence.push(color);
     console.log(this.gameService.playerSequence);
-
-
   }
 
   ResetPlayerSequence(): void {
     this.gameService.playerSequence = [];
+
   }
 
 

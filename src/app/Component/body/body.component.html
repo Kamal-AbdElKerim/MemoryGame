@@ -46,33 +46,40 @@
 }
 
 
-<div class="border-2 border-sky-500 p-5 grid gap-4 boxPlay" [ngStyle]="{
+<div class=" p-5 grid gap-4 boxPlay" [ngStyle]="{
   'grid-template-columns': 'repeat(' + getColumnCount() + ', 1fr)'
 }">
 
-  <ng-container *ngIf="StartAnswers; else memorizeSequence">
-    <app-box-color
+  @if (StartAnswers) {
 
-      *ngFor="let color of randomizedSequence"
+    @for (color of randomizedSequence; track color) {
+<app-box-color
+
+
       (click)="handlePlayerClick(color)"
       [color]="color"
       [Border]="Border"
       [width]="getDynamicSize() - (getDynamicSize() * 0.35)"
       [height]="getDynamicSize() - (getDynamicSize() * 0.35)"
       [isRandomized]="true"
-      [playerSequence]="gameService.playerSequence"
 
     >
     </app-box-color>
-  </ng-container>
+}
 
-  <ng-template #memorizeSequence>
-    <app-box-color
-      *ngFor="let color of gameSequence"
+} @else {
+
+    @for (color of gameSequence; track color) {
+<app-box-color
+
       [color]="color"
       [Border]="Border"
       [width]="getDynamicSize() - (getDynamicSize() * 0.35)"
       [height]="getDynamicSize() - (getDynamicSize() * 0.35)">
     </app-box-color>
-  </ng-template>
+}
+
+}
+
+
 </div>

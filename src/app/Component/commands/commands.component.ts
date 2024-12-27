@@ -1,12 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { GameService } from '../game.service';
-import {NgIf} from "@angular/common";
+import { GameService } from '../../service/game.service';
+
 @Component({
   selector: 'app-commands',
-  standalone: true,
-  imports: [
-    NgIf
-  ],
+
   templateUrl: './commands.component.html',
   styleUrl: './commands.component.css'
 })
