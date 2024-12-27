@@ -47,20 +47,21 @@ export class BodyComponent {
     this.countdown = 15;
     this.gameService.generateSequence(this.Round);
     this.gameSequence = this.gameService.gameSequence;
-    this.RandomColor = this.shuffleArray(this.gameSequence);
+   // this.RandomColor = this.shuffleArray(this.gameSequence);
+    this.RandomColor = this.gameService.gameSequence;
     this.randomizeSequence();
     this.displaySequence();
     console.log('Generated sequence:', this.RandomColor);
   }
 
-  shuffleArray(array: string[]): string[] {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
+ // shuffleArray(array: string[]): string[] {
+ //   const shuffled = [...array];
+ //   for (let i = shuffled.length - 1; i > 0; i--) {
+ //     const j = Math.floor(Math.random() * (i + 1));
+ //     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+ //   }
+ //   return shuffled;
+ // }
 
 
   randomizeSequence(): void {
@@ -116,7 +117,6 @@ export class BodyComponent {
     this.gameService.playerSequence = [];
 
   }
-
 
 
   IsGood(): void {
